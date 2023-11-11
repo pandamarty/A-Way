@@ -31,12 +31,25 @@
             color: #F8965D;
             text-decoration: underline;
         }
+
+        a {
+            text-decoration: none; /* Remove underline */
+            color: #F8965D; /* Set link color */
+            font-weight: bold; /* Make the text bold */
+            font-family: sans-serif;
+            transition: color 0.3s; /* Add a smooth color transition on hover */
+        }
+
+        /* Hover effect */
+        a:hover {
+            color: #3333; /* Change color on hover */
+        }
         
     </style>
 
 </head>
 <body>
-    <div style="display: flex; justify-content: right; align-items: center;"><a href="./events.html"><img src="./images/events-icon.png" style="height: 20px; padding-right: 10px;"/>Events</a></div>
+    <div style="display: flex; align-items: right; align-content: right;"><a href="./events.html" style="display: flex; align-items: center; align-content: center;"><img src="./images/events-icon.png" style="height: 25px; padding-right: 10px; align-items: center; align-content: center;"/>Events</a></div>
     
     <div class="title">Find your pitch</div>
     <div id="pitchInput" style="display: flex; justify-content: center;"><input id="searchInput" style="border-radius: 6px; margin-right: 10px; border: 3px solid #ccc;" type="text" placeholder="Ex: A1"/><button style="border-radius: 6px; color: #333; font-weight: 600; background-color: #F8965D; border:none; cursor: pointer;" onclick="findPitch()">Let's go!</button></div>
@@ -123,13 +136,14 @@
 
         async function findPitch() {
             var searchInput = document.getElementById('searchInput').value;
+            var searchInputUpperCase = searchInput.toUpperCase();
 
             try {
                 const response = await fetch('map.json');
                 const data = await response.json();
 
                 for (const feature of data.features) {
-                    if (feature.properties.name === searchInput) {
+                    if (feature.properties.name === searchInputUpperCase) {
                         var lat = feature.geometry.coordinates[1];
                         var lng = feature.geometry.coordinates[0];
 
