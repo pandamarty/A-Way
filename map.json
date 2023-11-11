@@ -3,6 +3,7 @@
     "features":[
        {
           "type":"Feature",
+          "occupied":false,
           "properties":{
              "name":"A13"
           },
@@ -17,6 +18,7 @@
        },
        {
           "type":"Feature",
+          "occupied":false,
           "properties":{
              "name":"A14"
           },
@@ -31,6 +33,7 @@
        },
        {
           "type":"Feature",
+          "occupied":false,
           "properties":{
              "name":"A15"
           },
@@ -367,6 +370,7 @@
        },
        {
           "type":"Feature",
+          "occupied": "true",
           "properties":{
              "name":"A19"
           },

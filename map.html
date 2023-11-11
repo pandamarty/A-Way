@@ -72,15 +72,21 @@
                 draggable:true,
                 icon: myIcon
             }
+            
+            // let marker = new L.Marker([data['features'][0]['geometry']['coordinates'][1], data['features'][0]['geometry']['coordinates'][0]]);
+            // marker.addTo(map);
 
             for (x in data['features']) {
+                
+                // creazione di un elemento
                 let spot = {
                     'name': data['features'][x]['properties']['name'],
                     'lat': data['features'][x]['geometry']['coordinates'][1],
                     'lng': data['features'][x]['geometry']['coordinates'][0]
                 }
-                debugger;
-                let marker = new L.Marker(spot.lat, spot.lng, iconOptions);
+
+                // aggiunta del marker sulla mappa
+                let marker = new L.Marker([spot.lat, spot.lng] , iconOptions);
                 marker.addTo(map);
 
                 var navigationLink = 'https://www.openstreetmap.org/directions?engine=fossgis_valhalla_foot&route=' + spot.lat + '%2C' + spot.lng + '%3B' + currentLat + '%2C' + currentLng + '#map=19/46.50314/11.29904&layers=N';
@@ -104,7 +110,6 @@
         ];
 
         poiMarks.forEach(function(spot) {
-            
             var marker = L.marker([spot.lat, spot.lng]).addTo(map);
             var navigationLink = 'https://www.openstreetmap.org/directions?engine=fossgis_valhalla_foot&route=' + spot.lat + '%2C' + spot.lng + '%3B' + currentLat + '%2C' + currentLng + '#map=19/46.50314/11.29904&layers=N'
 
