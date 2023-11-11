@@ -60,18 +60,18 @@
           .then(response => response.json())
           .then(data => {
             
-            let customIcon = {
+            let freeIcon = L.icon({
              iconUrl: './images/free.svg',
              iconSize:[12,12]
-            };
+            });
 
-            let myIcon = L.icon(customIcon);
+            let occupiedIcon = L.icon({
+             iconUrl: './images/occupied.svg',
+             iconSize:[12,12]
+            });
 
-            let iconOptions = {
-                title: data['features'][0]['properties']['name'],
-                draggable:true,
-                icon: myIcon
-            }
+            // let myIcon = L.icon(customIcon);
+
             
             // let marker = new L.Marker([data['features'][0]['geometry']['coordinates'][1], data['features'][0]['geometry']['coordinates'][0]]);
             // marker.addTo(map);
@@ -82,7 +82,14 @@
                 let spot = {
                     'name': data['features'][x]['properties']['name'],
                     'lat': data['features'][x]['geometry']['coordinates'][1],
-                    'lng': data['features'][x]['geometry']['coordinates'][0]
+                    'lng': data['features'][x]['geometry']['coordinates'][0],
+                    'occupied': data['features'][x]['occupied']
+                }
+                    
+                let iconOptions = {
+                    title: data['features'][x]['properties']['name'],
+                    draggable:false,
+                    icon: spot.occupied ? occupiedIcon : freeIcon 
                 }
 
                 // aggiunta del marker sulla mappa

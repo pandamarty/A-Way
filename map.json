@@ -581,6 +581,7 @@
        },
        {
           "type":"Feature",
+          "occupied":true,
           "properties":{
              "name":"A37"
           },
@@ -1029,6 +1030,7 @@
        },
        {
           "type":"Feature",
+          "occupied": true,
           "properties":{
              "name":"B26"
           },
