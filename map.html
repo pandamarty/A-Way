@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <link rel="icon" href="./images/Away.png" type="image/x-icon">
+    <title>A-Way | Map</title>
 
     <style>
         #map {
@@ -51,7 +53,7 @@
 <body>
     <div style="display: flex; align-items: right; align-content: right;"><a href="./events.html" style="display: flex; align-items: center; align-content: center;"><img src="./images/events-icon.png" style="height: 25px; padding-right: 10px; align-items: center; align-content: center;"/>Events</a></div>
     
-    <div class="title">Find your pitch</div>
+    <div class="title">Find A-Way</div>
     <div id="pitchInput" style="display: flex; justify-content: center;"><input id="searchInput" style="border-radius: 6px; margin-right: 10px; border: 3px solid #ccc;" type="text" placeholder="Ex: A1"/><button style="border-radius: 6px; color: #333; font-weight: 600; background-color: #F8965D; border:none; cursor: pointer;" onclick="findPitch()">Let's go!</button></div>
     <div id="map"></div>
 
@@ -149,12 +151,6 @@
 
                         var navigationLink = 'https://www.openstreetmap.org/directions?engine=fossgis_valhalla_foot&route=' + lat + '%2C' + lng + '%3B' + currentLat + '%2C' + currentLng + '#map=19/46.50314/11.29904&layers=N';
                         window.location.href = navigationLink;
-                        var elements = document.getElementsByClassName('text-black text-decoration-none geolink');
-
-                        // Loop through the collection and hide each element
-                        for (var i = 0; i < elements.length; i++) {
-                            elements[i].style.display = 'none';
-                        }
                         return; 
                     }
                 }
