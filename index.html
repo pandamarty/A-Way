@@ -3,67 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
-    <style>
-        #map {
-            height: 100vh;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <title>A-Way | Home</title>
 </head>
 <body>
-    <div id="map"></div>
+    <header>
+        <!-- Navbar -->
+        <nav>
+            <ul>
+                <li><a href="https://hackathon.bz.it/project/a-way">About</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <script>
-        var map = L.map('map').setView([46.50303, 11.29926], 18); // Maximum supported zoom level is 18
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        var campingSpots = [
-            { id: 1, name: 'Restaurant', lat: 46.50325, lng: 11.29949 },
-            { id: 2, name: 'Entrance', lat: 46.50274, lng: 11.29988 },
-            // Add more spots as needed
-        ];
-
-        campingSpots.forEach(function(spot) {
-            var marker = L.marker([spot.lat, spot.lng]).addTo(map);
-            marker.bindPopup('<b>' + spot.name + '</b><br>Spot ' + spot.id)
-                .on('click', function() {
-                    navigateToSpot(spot.lat, spot.lng);
-                });
-        });
-        
-        var tmp = L.layerGroup();
-
-        // Custom internal paths within the camping area
-        var internalPaths = [
-            { start: [46.50328503793816, 11.299639642238617], end: [46.503307055000576, 11.299164891242981] },
-            { start: [46.503307055000576, 11.299164891242981], end: [46.50320738838358, 11.298703551292421] },
-            { start: [46.50320738838358, 11.298703551292421], end: [46.503131715459816, 11.298598945140839]},
-            { start: [46.503131715459816, 11.298598945140839], end: [46.503061579485156, 11.298566758632662] },
-            { start: [46.503061579485156, 11.298566758632662], end: [46.502803183008375, 11.298666000366213] },
-        ];
-
-        function navigateToSpot(destLat, destLng) {
-            var waypoints = [
-                L.latLng(46.50303, 11.29926), // User's current location
-                L.latLng(destLat, destLng),   // Destination camping spot
-            ];
-
-            internalPaths.forEach(function(path) {
-                // waypoints.push(L.latLng(path.end));
-                tmp.addLayer(path);
-            });
-
-            tmp.addTo(map);
-
-            L.Routing.control({
-                waypoints: waypoints,
-            }).addTo(map);
-        }
-    </script>
+    <main>
+        <!-- Main Container -->
+        <div class="main-container">
+            <img src="./images/Away.png" alt="Logo">
+            <button><a href="map.html">Start</a></button>
+        </div>
+    </main>
 </body>
 </html>

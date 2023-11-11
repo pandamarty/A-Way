@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+    <style>
+        #map {
+            height: 85vh;
+        }
+        #pitchInput {
+            display: 'flex';
+            padding-top: 2rem;
+            padding-left: 2rem;
+            padding-bottom: 1rem;
+            align-self: 'center';
+        }
+        .title {
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="title">Find your pitch</div>
+    <div id="pitchInput"><input type="number"/><button>Let's go!'</button></div>
+    <div id="map"></div>
+
+    <script>
+
+        // creazione della mappa
+        var map = L.map('map').setView([46.50303, 11.29926], 18); // Maximum supported zoom level is 18
+
+        var currentLat = 46.50334027716558;
+        var currentLng = 11.299462616443634;
+
+        // creazione della tile
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // creazione dei posti
+        fetch('map.json')
+          .then(response => response.json())
+          .then(data => {
+            /*
+            let customIcon = {
+             iconUrl:"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fen%2Fsearch%3Fq%3Dcar%2Bicon&psig=AOvVaw3zuK-VdfBcVfOU8FS7o67c&ust=1699754856699000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCICIurXuuoIDFQAAAAAdAAAAABAE",
+             iconSize:[40,40]
+            }
+
+            let myIcon = L.icon(customIcon);
+
+            let iconOptions = {
+                title: "sasso",
+                draggable:true,
+                icon:myIcon
+            }
+*/
+            for (x in data['features']) {
+                console.log(data['features'][x]['geometry']['coordinates'][1]);
+                let marker = new L.Marker([data['features'][x]['geometry']['coordinates'][1], data['features'][x]['geometry']['coordinates'][0]]);
+                marker.addTo(map);
+            }
+              
+            // let sos = new L.Marker([data['features'][0]['geometry']['coordinates'][1], data['features'][0]['geometry']['coordinates'][0]]).addTo(map);
+        });
+
+        // punti di interesse
+        var poiMarks = [
+            { id: 1, name: 'Restaurant',        lat: 46.50325, lng: 11.29949 },
+            { id: 2, name: 'Entrance',          lat: 46.50274, lng: 11.29988 },
+            { id: 3, name: 'Reception',         lat: 46.50334027716558, lng: 11.299462616443634 },
+            { id: 4, name: 'Pool',              lat: 46.503068902698594, lng: 11.299382150173187 },
+            { id: 5, name: 'Pick-nick area',    lat: 46.50319448637659, lng: 11.29921317100525 },
+            { id: 6, name: 'Bike rent',         lat: 46.503491640080185, lng: 11.299221217632295 }
+        ];
+
+        poiMarks.forEach(function(spot) {
+            
+            var marker = L.marker([spot.lat, spot.lng]).addTo(map);
+            var navigationLink = 'https://www.openstreetmap.org/directions?engine=fossgis_valhalla_foot&route=' + spot.lat + '%2C' + spot.lng + '%3B' + currentLat + '%2C' + currentLng + '#map=19/46.50314/11.29904&layers=N'
+
+            marker.bindPopup('<b>' + spot.name + '</b><br><a href="' + navigationLink + '">Go</a>')
+                .on('click', function() {
+                    
+
+                });
+        });
+        
+
+    </script>
+</body>
+</html>
