@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+    <style>
+        #map {
+            height: 85vh;
+        }
+        #pitchInput {
+            padding-top: 2rem;
+            padding-left: 2rem;
+            padding-bottom: 1rem;
+            height: 2rem;
+        }
+        .title {
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+            padding-top: 1rem;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            color: #F8965D;
+            text-decoration: underline;
+        }
+        
+    </style>
+
+</head>
+<body>
+    <div style="align-content: right;"><a href="./events.html"><img src="./images/events-icon.png" style="height: 20px; padding-right: 10px;"/>Events</a></div>
+    
+    <div class="title">Find your pitch</div>
+    <div id="pitchInput" style="display: flex; justify-content: center;"><input style="border-radius: 6px; margin-right: 10px; border: 3px solid #ccc;" type="text" placeholder="Ex: A01"/><button style="border-radius: 6px; color: #333; font-weight: 600; background-color: #F8965D; border:none; cursor: pointer;">Let's go!</button></div>
+    <div id="map"></div>
+
+    <script>
+
+        // creazione della mappa
+        var map = L.map('map').setView([46.50303, 11.29926], 18); // Maximum supported zoom level is 18
+
+        var currentLat = 46.50334027716558;
+        var currentLng = 11.299462616443634;
+
+        // creazione della tile
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // creazione dei posti
+        fetch('map.json')
+          .then(response => response.json())
+          .then(data => {
+            
+            let customIcon = {
+             iconUrl: './images/free.svg',
+             iconSize:[12,12]
+            };
+
+            let myIcon = L.icon(customIcon);
+
+            let iconOptions = {
+                title: data['features'][0]['properties']['name'],
+                draggable:true,
+                icon: myIcon
+            }
+            
+            // let marker = new L.Marker([data['features'][0]['geometry']['coordinates'][1], data['features'][0]['geometry']['coordinates'][0]]);
+            // marker.addTo(map);
+
+            for (x in data['features']) {
+                
+                // creazione di un elemento
+                let spot = {
+                    'name': data['features'][x]['properties']['name'],
+                    'lat': data['features'][x]['geometry']['coordinates'][1],
+                    'lng': data['features'][x]['geometry']['coordinates'][0]
+                }
+
+                // aggiunta del marker sulla mappa
+                let marker = new L.Marker([spot.lat, spot.lng] , iconOptions);
+                marker.addTo(map);
+
+                var navigationLink = 'https://www.openstreetmap.org/directions?engine=fossgis_valhalla_foot&route=' + spot.lat + '%2C' + spot.lng + '%3B' + currentLat + '%2C' + currentLng + '#map=19/46.50314/11.29904&layers=N';
+
+                marker.bindPopup('<b>' + spot.name + '</b><br><a href="' + navigationLink + '">Go</a>')
+                .on('click', function() {
+                    
+                });
+            }
+              
+        });
+
+        // punti di interesse
+        var poiMarks = [
+            { id: 1, name: 'Restaurant',        lat: 46.50325, lng: 11.29949 },
+            { id: 2, name: 'Entrance',          lat: 46.50274, lng: 11.29988 },
+            { id: 3, name: 'Reception',         lat: 46.50334027716558, lng: 11.299462616443634 },
+            { id: 4, name: 'Pool',              lat: 46.503068902698594, lng: 11.299382150173187 },
+            { id: 5, name: 'Pick-nick area',    lat: 46.50319448637659, lng: 11.29921317100525 },
+            { id: 6, name: 'Bike rent',         lat: 46.503491640080185, lng: 11.299221217632295 }
+        ];
+
+        poiMarks.forEach(function(spot) {
+            var marker = L.marker([spot.lat, spot.lng]).addTo(map);
+            var navigationLink = 'https://www.openstreetmap.org/directions?engine=fossgis_valhalla_foot&route=' + spot.lat + '%2C' + spot.lng + '%3B' + currentLat + '%2C' + currentLng + '#map=19/46.50314/11.29904&layers=N'
+
+            marker.bindPopup('<b>' + spot.name + '</b><br><a href="' + navigationLink + '">Go</a>')
+                .on('click', function() {
+                    
+
+                });
+        });
+
+    </script>
+</body>
+</html>
