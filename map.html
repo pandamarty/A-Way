@@ -12,21 +12,34 @@
             height: 85vh;
         }
         #pitchInput {
-            display: 'flex';
             padding-top: 2rem;
             padding-left: 2rem;
             padding-bottom: 1rem;
-            align-self: 'center';
+            height: 2rem;
         }
         .title {
+            font-size: 2em;
             font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+            padding-top: 1rem;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            color: #F8965D;
+            text-decoration: underline;
         }
+        
     </style>
 
 </head>
 <body>
+    <div style="align-content: right;"><a href="./events.html"><img src="./images/events-icon.png" style="height: 20px; padding-right: 10px;"/>Events</a></div>
+    
     <div class="title">Find your pitch</div>
-    <div id="pitchInput"><input type="number"/><button>Let's go!'</button></div>
+    <div id="pitchInput" style="display: flex; justify-content: center;"><input style="border-radius: 6px; margin-right: 10px; border: 3px solid #ccc;" type="text" placeholder="Ex: A01"/><button style="border-radius: 6px; color: #333; font-weight: 600; background-color: #F8965D; border:none; cursor: pointer;">Let's go!</button></div>
     <div id="map"></div>
 
     <script>
@@ -46,27 +59,38 @@
         fetch('map.json')
           .then(response => response.json())
           .then(data => {
-            /*
+            
             let customIcon = {
-             iconUrl:"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fen%2Fsearch%3Fq%3Dcar%2Bicon&psig=AOvVaw3zuK-VdfBcVfOU8FS7o67c&ust=1699754856699000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCICIurXuuoIDFQAAAAAdAAAAABAE",
-             iconSize:[40,40]
-            }
+             iconUrl: './images/free.svg',
+             iconSize:[12,12]
+            };
 
             let myIcon = L.icon(customIcon);
 
             let iconOptions = {
-                title: "sasso",
+                title: data['features'][0]['properties']['name'],
                 draggable:true,
-                icon:myIcon
+                icon: myIcon
             }
-*/
+
             for (x in data['features']) {
-                console.log(data['features'][x]['geometry']['coordinates'][1]);
-                let marker = new L.Marker([data['features'][x]['geometry']['coordinates'][1], data['features'][x]['geometry']['coordinates'][0]]);
+                let spot = {
+                    'name': data['features'][x]['properties']['name'],
+                    'lat': data['features'][x]['geometry']['coordinates'][1],
+                    'lng': data['features'][x]['geometry']['coordinates'][0]
+                }
+                debugger;
+                let marker = new L.Marker(spot.lat, spot.lng, iconOptions);
                 marker.addTo(map);
+
+                var navigationLink = 'https://www.openstreetmap.org/directions?engine=fossgis_valhalla_foot&route=' + spot.lat + '%2C' + spot.lng + '%3B' + currentLat + '%2C' + currentLng + '#map=19/46.50314/11.29904&layers=N';
+
+                marker.bindPopup('<b>' + spot.name + '</b><br><a href="' + navigationLink + '">Go</a>')
+                .on('click', function() {
+                    
+                });
             }
               
-            // let sos = new L.Marker([data['features'][0]['geometry']['coordinates'][1], data['features'][0]['geometry']['coordinates'][0]]).addTo(map);
         });
 
         // punti di interesse
@@ -90,7 +114,6 @@
 
                 });
         });
-        
 
     </script>
 </body>
